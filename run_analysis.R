@@ -81,8 +81,12 @@ run_analysis <- function() {
   moltenDataSet <- melt(X_merged, id=c("subject.id","Activity"))
   tidyDataSet <- dcast(moltenDataSet, subject.id + Activity ~ variable, mean)
   
+  #Rename columns to reflect 'new' averaging.
+  names(tidyDataSet)[3:ncol(tidyDataSet)] <- paste("Average", colnames(tidyDataSet[3:ncol(tidyDataSet)]), sep = ".")
+  
+  
   # Save tidyDataSet to file.  My preference is csv.
-  write.csv(tidyDataSet, "tidyDataSet.txt", row.names = FALSE)
+  write.table(tidyDataSet, "tidyDataSet.txt", row.names = FALSE)
   
   # Not required, but return the tidy data set.
   return(tidyDataSet)
